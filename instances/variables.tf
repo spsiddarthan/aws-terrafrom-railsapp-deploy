@@ -34,8 +34,6 @@ variable "exec_commands" {
         "cd",
         "git clone https://github.com/spsiddarthan/sample-app",
         "cd sample-app",
-        "bundle install",
-        "exec > >(tee /var/log/install-rails-and-start-app.log|logger -t install-rails-and-start-app  -s 2>/dev/console) 2>&1",
         "echo \"Starting Ruby on Rails app\"",
         "rails -s &"
     ]
