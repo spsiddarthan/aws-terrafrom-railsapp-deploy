@@ -2,7 +2,6 @@ variable "region" {
   default = "us-west-2"
 }
 variable "key_name" {}
-variable "name" {}
 variable "subnet_id" {}
 variable "private_key_path" {}
 variable "vpc_security_group_ids" {

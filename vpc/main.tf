@@ -188,11 +188,11 @@ resource "aws_security_group" "prod" {
         protocol = "icmp"
         cidr_blocks = ["0.0.0.0/0"]
     }
-    egress { 
-        from_port   = 0
-        to_port     = 65535
-        protocol = "tcp"
-        cidr_blocks = ["${var.private_subnet_cidr}"]
+    egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
     }
 
     vpc_id = "${aws_vpc.default.id}"
@@ -204,7 +204,7 @@ resource "aws_security_group" "prod" {
 
 module "prod" {
   source = "../instance"
-  name = "beta"
+  name = "prod"
   key_name = "${var.key_name}"
   private_key_path = "${var.private_key_path}"
   vpc_security_group_ids = ["${aws_security_group.prod.id}"]
