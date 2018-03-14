@@ -2,17 +2,27 @@ variable "region" {
   default = "us-west-2"
 }
 variable "key_name" {}
+variable "name" {}
+variable "subnet_id" {}
 variable "private_key_path" {}
-variable "security_group_id" {}
+variable "vpc_security_group_ids" {
+    type = "list"
+}
 variable "instance_type" {
   default = "t2.micro"
 }
+
+variable "associate_public_ip_address" {}
+variable "source_dest_check" {}
+variable "tags" {}
+
 # Amazon Linux AMI
 variable "amis" {
   default = {
     us-west-2 = "ami-79873901"  #most recent t2.micro AMI as of 9th March, 2018.
   }
 }
+
 
 variable "exec_commands" {
     default = [
