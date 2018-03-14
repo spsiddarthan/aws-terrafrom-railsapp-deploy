@@ -43,7 +43,8 @@ variable "exec_commands" {
         "cd",
         "git clone https://github.com/spsiddarthan/sample-app",
         "cd sample-app",
+        "bundle install",
         "echo \"Starting Ruby on Rails app\"",
-        "rails -s &"
+        "rails server &"
     ]
 }
