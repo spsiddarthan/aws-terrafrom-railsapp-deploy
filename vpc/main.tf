@@ -204,7 +204,6 @@ resource "aws_security_group" "prod" {
 
 module "prod" {
   source = "../instance"
-  name = "prod"
   key_name = "${var.key_name}"
   private_key_path = "${var.private_key_path}"
   vpc_security_group_ids = ["${aws_security_group.prod.id}"]
