@@ -2,7 +2,7 @@ provider "aws" {
   region = "${var.region}"
 }
 
-
+/*
 module "beta" {
   source = "./app"
   key_name = "${var.key_name}"
@@ -16,4 +16,11 @@ module "prod" {
   private_key_path = "${var.private_key_path}"
   security_group_id = "${var.security_group_id}"
 }
+*/
+
+module "vpc" {
+  source = "./vpc"
+  key_name = "${var.key_name}"
+}
+
 
