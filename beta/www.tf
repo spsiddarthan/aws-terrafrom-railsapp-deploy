@@ -1,3 +1,0 @@
-module "beta" {
-  source = "./app"
-}
