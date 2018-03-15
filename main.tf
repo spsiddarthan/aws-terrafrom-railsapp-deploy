@@ -5,7 +5,6 @@ provider "aws" {
 module "vpc" {
   source = "./vpc"
   key_name = "${var.key_name}"
-  key_name = "${var.key_name}"
   private_key_path = "${var.private_key_path}"
 }
 

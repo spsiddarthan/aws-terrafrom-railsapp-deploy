@@ -25,3 +25,7 @@ resource "aws_eip" "www" {
     instance = "${aws_instance.www.id}"
     vpc = true
 }
+
+output "ip" {
+  value = "${aws_eip.www.public_ip}"
+}

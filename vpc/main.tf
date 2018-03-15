@@ -208,6 +208,29 @@ resource "aws_security_group" "prod" {
     }
 }
 
+resource "aws_security_group" "beta" {
+    name = "vpc_beta"
+    description = "Allow incoming database connections."
+
+    ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["${var.vpc_cidr}"]
+    }
+    egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+    vpc_id = "${aws_vpc.default.id}"
+
+    tags {
+        Name = "BETASG"
+    }
+}
+
 module "prod" {
   source = "../instance"
   key_name = "${var.key_name}"
