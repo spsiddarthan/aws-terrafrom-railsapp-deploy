@@ -75,7 +75,7 @@ resource "aws_security_group" "nat" {
 }
 
 resource "aws_instance" "nat" {
-    ami = "${lookup(var.amis, var.region)}"
+    ami = "ami-d3cc78ab"
     instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
     vpc_security_group_ids = ["${aws_security_group.nat.id}"]
@@ -208,9 +208,7 @@ resource "aws_security_group" "prod" {
     }
 }
 
-resource "aws_security_group" "beta" {
-    name = "vpc_beta"
-    description = "Allow incoming database connections."
+resource "aws_security_group" "betasg" {
 
     ingress {
         from_port = 22
@@ -218,16 +216,30 @@ resource "aws_security_group" "beta" {
         protocol = "tcp"
         cidr_blocks = ["${var.vpc_cidr}"]
     }
-    egress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
+    ingress {
+        from_port = -1
+        to_port = -1
+        protocol = "icmp"
+        cidr_blocks = ["${var.vpc_cidr}"]
     }
+
+    egress {
+        from_port = 80
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    egress {
+        from_port = 443
+        to_port = 443
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
     vpc_id = "${aws_vpc.default.id}"
 
     tags {
-        Name = "BETASG"
+        Name = "betasg"
     }
 }
 
@@ -242,3 +254,19 @@ module "prod" {
   tags = "prod server"
 }
 
+resource "aws_instance" "beta-www"{
+  ami = "${lookup(var.amis, var.region)}"
+  instance_type = "${var.instance_type}"
+  key_name = "${var.key_name}"
+  vpc_security_group_ids = ["${aws_security_group.betasg.id}"]
+  source_dest_check = false
+  subnet_id = "${aws_subnet.us-west-2c-private.id}"
+  tags {
+        Name = "beta server"
+  }
+}
+
+resource "aws_eip" "beta-www" {
+    instance = "${aws_instance.beta-www.id}"
+    vpc = true
+}
